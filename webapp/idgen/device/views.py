@@ -31,7 +31,13 @@ class RegistrationView(View):
 			'user': user.hex()
 		})
 
-		return HttpResponse(bytes.fromhex(device.identifier), content_type="application/octet-stream")
+		print("==> Sending output: %s %s" % (device.identifier, bytes.fromhex(device.identifier)))
+
+		output = bytes.fromhex(device.identifier)
+		response = HttpResponse(output, content_type="application/octet-stream")
+		response['Content-Length'] = len(output)
+
+		return response
 
 	def _parse_identifier(self, content):
 
