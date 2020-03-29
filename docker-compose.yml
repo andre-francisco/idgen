@@ -1,0 +1,42 @@
+#####
+# Docker compose YAML file
+#
+# For documentation see: https://docs.docker.com/compose/yml/
+#####
+
+version: "3"
+
+volumes:
+  static-files:
+    driver: local
+  postgres:
+    driver: local
+    
+services:
+    db:
+      image: postgres:11.1
+      volumes:
+        - postgres:/var/lib/postgresql/data/pgdata
+      env_file:
+        - ./config/environment/development.env
+      expose:
+        - "5432"
+
+    webserver:
+      build: ./nginx
+      ports:
+        - "80:80"
+        - "443:443"
+      
+    webapp:
+      build:
+        context: webapp
+      volumes:
+        - ./webapp/covidoff:/srv/covidoff
+        - static-files:/srv/static-files
+      ports:
+        - "8000:8000"
+      depends_on:
+        - db
+      env_file:
+        - ./config/environment/development.env
