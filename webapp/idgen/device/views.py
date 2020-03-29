@@ -35,11 +35,7 @@ class RegistrationView(View):
 
 		print("==> Sending output: %s %s" % (device.identifier, bytes.fromhex(device.identifier)))
 
-		output = bytes.fromhex(device.identifier)
-		# response = HttpResponse(output, content_type="application/octet-stream")
-		response = FileResponse(io.BytesIO(output), content_type="application/octet-stream")
-
-		return response
+		return HttpResponse(device.identifier)
 
 	def _parse_identifier(self, content):
 
