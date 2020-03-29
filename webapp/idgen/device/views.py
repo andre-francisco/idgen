@@ -26,7 +26,7 @@ class RegistrationView(View):
 		})
 
 		print("==> Meta <==")
-		print(device.identifier)
+		print(bytes.fromhex(device.identifier).hex())
 		print(device.realm)
 		print(device.user)
 
