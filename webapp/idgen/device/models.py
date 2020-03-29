@@ -61,10 +61,10 @@ class Device(models.Model):
 	identifier = RandomIdentifierField(primary_key=True, max_length=16,
 		help_text=_('Device identifier'))
 
-	realm = CharField(max_length=8,
+	realm = CharField(max_length=16,
 		help_text=_('Device realm'))
 
-	user = CharField(max_length=8,
+	user = CharField(max_length=16,
 		help_text=_('Device user'))
 
 	creation_date = models.DateTimeField(auto_now_add=True,
