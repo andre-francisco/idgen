@@ -7,15 +7,12 @@ class RegistrationView(View):
 
 	def post(self, request):
 
-		content = request.body.decode('ascii')
+		content = request.body
 
 		if len(content) == 0:
-			return HttpResponse('', content_type="application/octet-stream", status=422)
+			return HttpResponse(b'', content_type="application/octet-stream", status=422)
 
-		if re.fullmatch(r'^[0-9a-fA-F]+$', content) is None:
-			return HttpResponse('', content_type="application/octet-stream", status=422)
-
-		expected = 16 if content[0] in '89ABCDEF' else 8
+		expected = 16 if content[0] & 0x80 else 8
 
 		if len(content) != expected:
 			return HttpResponse('', content_type="application/octet-stream", status=422)
@@ -24,8 +21,8 @@ class RegistrationView(View):
 		user = content[expected:]
 
 		device = Device.objects.create(**{
-			'realm': realm,
-			'user': user
+			'realm': realm.hex(),
+			'user': user.hex()
 		})
 
 		return HttpResponse(device.identifier, content_type="application/octet-stream")
