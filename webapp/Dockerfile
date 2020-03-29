@@ -6,11 +6,11 @@ RUN unzip awscliv2.zip
 RUN ./aws/install
 
 # Add code
-ADD ./covidoff /srv/covidoff
+ADD ./idgen /srv/idgen
 
 # Install application requirements
-ADD ./config/requirements.txt /srv/covidoff/
-RUN pip3 install -r /srv/covidoff/requirements.txt
+ADD ./config/requirements.txt /srv/idgen/
+RUN pip3 install -r /srv/idgen/requirements.txt
 
 # Add start script
 ADD ./config/start.sh /
@@ -24,7 +24,7 @@ ADD ./config/database-check.py /srv/config/database-check.py
 # Create django user, will own the Django app. This is needed
 # because we defined this, in the uwsgi.ini file
 RUN adduser --no-create-home --disabled-login --group --system django
-RUN chown -R django:django /srv/covidoff
+RUN chown -R django:django /srv/idgen
 
 # Execute start script
 CMD ["./start.sh"]

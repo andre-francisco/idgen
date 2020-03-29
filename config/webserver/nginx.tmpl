@@ -43,13 +43,6 @@ http {
         listen 80;
         server_name ${NGINX_SERVER_NAME};
 
-        location /static {
-            alias /srv/covidoff/static;
-
-            # http://stackoverflow.com/q/19213510/1346257
-            include /etc/nginx/mime.types;
-        }
-
         location = /robots.txt { return 200 "User-agent: *\nAllow: /"; }
         location = /favicon.ico { access_log off; log_not_found off; return 404; }
         
@@ -69,13 +62,6 @@ http {
 
         ssl_prefer_server_ciphers on;
         ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # ie defaults minus SSLv3
-
-        location /static {
-            alias /srv/covidoff/static;
-
-            # http://stackoverflow.com/q/19213510/1346257
-            include /etc/nginx/mime.types;
-        }
 
         location = /robots.txt { return 200 "User-agent: *\nAllow: /"; }
         location = /favicon.ico { access_log off; log_not_found off; return 404; }
