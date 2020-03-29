@@ -35,7 +35,7 @@ class RegistrationView(View):
 
 		output = bytes.fromhex(device.identifier)
 		response = HttpResponse(output, content_type="application/octet-stream")
-		response['Content-Length'] = len(output)
+		# response['Content-Length'] = len(output)
 
 		return response
 
