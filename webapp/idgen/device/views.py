@@ -1,6 +1,5 @@
 from django.views.generic import View
 from django.http import HttpResponse
-from django.http import FileResponse
 from device.models import Device
 import io
 import re
