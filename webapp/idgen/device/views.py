@@ -12,7 +12,7 @@ class RegistrationView(View):
 		if len(content) == 0:
 			return HttpResponse(b'', content_type="application/octet-stream", status=422)
 
-		expected = 16 if content[0] & 0x80 else 8
+		expected = 8 if content[0] & 0x80 else 4
 
 		if len(content) != expected:
 			return HttpResponse('', content_type="application/octet-stream", status=422)
@@ -25,4 +25,4 @@ class RegistrationView(View):
 			'user': user.hex()
 		})
 
-		return HttpResponse(device.identifier, content_type="application/octet-stream")
+		return HttpResponse(bytes.fromhex(device.identifier), content_type="application/octet-stream")
