@@ -21,8 +21,9 @@ class GenerateIdentifier(object):
 	def __call__(self):
 
 		# Generates lhs + rhs only if lhs has HO bit set
-		lhs = generate_cryptsafe_code(int(self.length / 2), self.alphabet)
-		rhs = generate_cryptsafe_code(int(self.length / 2), self.alphabet) if lhs[0] in '89ABCDEF' else ''
+		lhs = generate_cryptsafe_code(int(self.length), self.alphabet)
+		rhs = ''
+		# rhs = generate_cryptsafe_code(int(self.length / 2), self.alphabet) if lhs[0] in '89ABCDEF' else ''
 
 		return lhs + rhs
 
@@ -58,7 +59,7 @@ class RandomIdentifierField(models.CharField):
 
 class Device(models.Model):
 
-	identifier = RandomIdentifierField(primary_key=True, max_length=16,
+	identifier = RandomIdentifierField(primary_key=True, max_length=8,
 		help_text=_('Device identifier'))
 
 	realm = CharField(max_length=16,
