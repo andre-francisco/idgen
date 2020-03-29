@@ -9,25 +9,34 @@ class RegistrationView(View):
 
 		content = request.body
 
-		if len(content) == 0:
+		try:
+
+			realm = self._parse_identifier(content)
+			user = self._parse_identifier(content[len(realm):])
+
+		except IndexError:
+
+			# Invalid size
 			return HttpResponse(b'', content_type="application/octet-stream", status=422)
 
-		expected = 8 if content[0] & 0x80 else 4
+		if len(realm) != self._expected_size(realm) or len(user) != self._expected_size(user):
+			return HttpResponse(b'', content_type="application/octet-stream", status=422)
 
-		if len(content) != expected:
-			return HttpResponse('', content_type="application/octet-stream", status=422)
-
-		realm = content[:expected]
-		user = content[expected:]
+		# e.g. the input wasn't all consumed
+		if len(realm) + len(user) != len(content):
+			return HttpResponse(b'', content_type="application/octet-stream", status=422)
 
 		device = Device.objects.create(**{
 			'realm': realm.hex(),
 			'user': user.hex()
 		})
 
-		print("==> Meta <==")
-		print(bytes.fromhex(device.identifier).hex())
-		print(device.realm)
-		print(device.user)
-
 		return HttpResponse(bytes.fromhex(device.identifier), content_type="application/octet-stream")
+
+	def _parse_identifier(self, content):
+
+		return content[:self._expected_size(content)]
+
+	def _expected_size(self, content):
+
+		return 4 if content[0] & 0x80 else 2
