@@ -1,6 +1,8 @@
 from django.views.generic import View
 from django.http import HttpResponse
+from django.http import FileResponse
 from device.models import Device
+import io
 import re
 
 class RegistrationView(View):
@@ -34,8 +36,8 @@ class RegistrationView(View):
 		print("==> Sending output: %s %s" % (device.identifier, bytes.fromhex(device.identifier)))
 
 		output = bytes.fromhex(device.identifier)
-		response = HttpResponse(output, content_type="application/octet-stream")
-		# response['Content-Length'] = len(output)
+		# response = HttpResponse(output, content_type="application/octet-stream")
+		response = FileResponse(io.BytesIO(output), content_type="application/octet-stream")
 
 		return response
 
