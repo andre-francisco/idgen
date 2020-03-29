@@ -25,4 +25,9 @@ class RegistrationView(View):
 			'user': user.hex()
 		})
 
+		print("==> Meta <==")
+		print(device.identifier)
+		print(device.realm)
+		print(device.user)
+
 		return HttpResponse(bytes.fromhex(device.identifier), content_type="application/octet-stream")
