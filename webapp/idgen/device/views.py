@@ -29,10 +29,13 @@ class RegistrationView(View):
 
 		device = Device.objects.create(**{
 			'realm': realm.hex(),
-			'user': user.hex()
+			'user': user.hex(),
+			'os': request.user_agent.os.family,
+			'os_version': request.user_agent.os.version
 		})
 
-		print("==> Returning %s %s" % (device.identifier, bytes.fromhex(device.identifier)))
+		print("==> User agent %s" % (request.META['HTTP_USER_AGENT']))
+		print("==> Returning  %s %s" % (device.identifier, bytes.fromhex(device.identifier)))
 
 		return HttpResponse(bytes.fromhex(device.identifier), content_type="applicatoin/octet-stream")
 

@@ -68,6 +68,12 @@ class Device(models.Model):
 	user = CharField(max_length=16,
 		help_text=_('Device user'))
 
+	os = CharField(max_length=256,
+		help_text=_('Device operating system'))
+
+	os_version = CharField(max_length=256,
+		help_text=_('Device operating system version string'))
+
 	creation_date = models.DateTimeField(auto_now_add=True,
 		help_text=_('Creation date'))
 
