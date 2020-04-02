@@ -31,7 +31,7 @@ class RegistrationView(View):
 			'realm': realm.hex(),
 			'user': user.hex(),
 			'os': request.user_agent.os.family,
-			'os_version': request.user_agent.os.version
+			'os_version': request.user_agent.os.version_string
 		})
 
 		print("==> User agent %s" % (request.META['HTTP_USER_AGENT']))
